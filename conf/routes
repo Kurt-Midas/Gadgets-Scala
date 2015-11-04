@@ -15,5 +15,8 @@ GET		/scrapTest		scrap.controllers.ScrapController.scrapTest()
 # Planetary calls
 GET 	/planetTest		planetary.controllers.PlanetController.planetTest()
 
+# POST testing for MarketDataHandler
+POST	/getIDList		pricehandler.controllers.MarketDataHandler.idListTest(idList: List[Int])
+
 # Map the JS resource paths
 GET        /*file                            controllers.Assets.versioned(path="/public", file: Asset)

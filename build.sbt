@@ -14,8 +14,27 @@ libraryDependencies ++= Seq(
   "mysql" %  "mysql-connector-java"  %   "5.1.36"
 )     
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val commonSettings = Seq(
+	organization 	:= 	"org.gadgets",
+	version 		:= 	"0.1-unfinished",
+	scalaVersion	:=	"2.11.7",
+	pipelineStages	:=	Seq(rjs, digest, gzip)
+)
 
-pipelineStages := Seq(rjs, digest, gzip)
+lazy val root = (project in file(".")).
+	enablePlugins(PlayScala).
+	settings(commonSettings: _*).
+	aggregate(dbmanager, planetary)
+
+//pipelineStages := Seq(rjs, digest, gzip)
 
 EclipseKeys.createSrc := EclipseCreateSrc.All
+
+fork in run := false
+
+lazy val dbmanager = (project in file("dbmanager")).
+	settings(commonSettings: _*)
+	
+lazy val planetary = (project in file("planetary")).
+	enablePlugins(PlayScala).
+	settings(commonSettings: _*)

@@ -27,6 +27,12 @@ object PlanetController extends Controller{
     }
   }
   
+  def planetTestUnjsond = Action.async {
+    PlanetaryJsonApi.getFullResponse.map { case res =>
+      Ok("" + res)
+    }
+  }
+  
   
 }
 
