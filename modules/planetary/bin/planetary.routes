@@ -1,0 +1,9 @@
+# Routes
+# This file defines all planetary routes
+# ~~~~
+
+# Planetary calls
+GET 		/planetTest			controllers.PlanetController.planetTest()
+
+# Map the JS resource paths
+#GET 		/*file				controllers.Assets.at(path="/modules/planetary/public", file)

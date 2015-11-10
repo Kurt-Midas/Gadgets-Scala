@@ -1,8 +1,6 @@
+import NativePackagerKeys._
+
 name := """Gadgets"""
-
-version := "1.0-SNAPSHOT"
-
-scalaVersion := "2.11.7"
 
 libraryDependencies ++= Seq(
   "org.webjars" % "angularjs" % "1.3.0-beta.2",
@@ -21,20 +19,35 @@ lazy val commonSettings = Seq(
 	pipelineStages	:=	Seq(rjs, digest, gzip)
 )
 
-lazy val root = (project in file(".")).
-	enablePlugins(PlayScala).
+lazy val root = Project(
+	id = "root",
+	base = file(".")
+).aggregate(dbmanager, planetary, scrap, webapi).
 	settings(commonSettings: _*).
-	aggregate(dbmanager, planetary)
+	dependsOn(dbmanager, planetary, scrap, webapi).
+	enablePlugins(PlayScala)
 
-//pipelineStages := Seq(rjs, digest, gzip)
 
 EclipseKeys.createSrc := EclipseCreateSrc.All
 
 fork in run := false
 
-lazy val dbmanager = (project in file("dbmanager")).
-	settings(commonSettings: _*)
-	
-lazy val planetary = (project in file("planetary")).
-	enablePlugins(PlayScala).
-	settings(commonSettings: _*)
+lazy val dbmanager = Project(
+	id = "dbmanager",
+	base = file("modules/dbmanager")
+).enablePlugins(PlayScala).settings(commonSettings: _*)
+
+lazy val planetary = Project(
+	id = "planetary",
+	base = file("modules/planetary")
+).enablePlugins(PlayScala).settings(commonSettings: _*).dependsOn(dbmanager)
+
+lazy val scrap = Project(
+	id = "scrap",
+	base = file("modules/scrap")
+).enablePlugins(PlayScala).settings(commonSettings: _*).dependsOn(dbmanager)
+
+lazy val webapi = Project(
+	id = "webapi",
+	base = file("modules/webapi")
+).enablePlugins(PlayScala).settings(commonSettings: _*)

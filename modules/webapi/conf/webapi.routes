@@ -1,0 +1,10 @@
+# Routes
+# This file defines all planetary routes
+# ~~~~
+
+# Webapi calls
+POST			/webapiTest  		controllers.WebapiController.webapiTest()
+##POST	/getIDList		pricehandler.controllers.MarketDataHandler.idListTest(idList: List[Int])
+
+# Map the JS resource paths
+#GET 		/*file				controllers.Assets.at(path="/modules/webapi/public", file)

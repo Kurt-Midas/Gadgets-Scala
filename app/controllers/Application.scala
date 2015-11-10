@@ -2,7 +2,7 @@ package controllers
 
 import play.api.mvc.{Action, Controller, Result}
 import play.api.http.MimeTypes
-import db.calls.TestCaller
+//import dbmanager.calls.TestCaller
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -18,7 +18,7 @@ object Application extends Controller {
     Ok(views.html.Index())
   }
   
-  case class Ship(groupId: Int, id: Int, name: String)
+  /*case class Ship(groupId: Int, id: Int, name: String)
   case class GroupedShips(map: Map[Int, Seq[Ship]])
   def test = Action.async {
     implicit val shipWrites = Json.writes[Ship]
@@ -33,7 +33,7 @@ object Application extends Controller {
     TestCaller.yieldFutureOfCategorySix().map { res => 
       res.toList.collect{case result => Ship.tupled(result)}
       }.map { res => Ok(Json.toJson(res.groupBy(_.groupId) ))}
-  }
+  }*/
   
 }
 
