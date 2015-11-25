@@ -1,5 +1,7 @@
-var app = angular.module('planetary.MainController', [planetary.mainlogic]);
+var app = angular.module('PlanetaryGadget', ['PlanetCoordinator']);
 
-app.controller('planetAppController', function($scope){
-	$scope.worldSeed = "This is a working world"
+app.controller('planetAppController', function($scope, PlanetLogic){
+	$scope.worldSeed = "The world of worlds. Planets!";
+	
+	$scope.Logic = PlanetLogic;
 })

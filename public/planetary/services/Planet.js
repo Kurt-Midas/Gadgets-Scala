@@ -1,4 +1,4 @@
-angular.module('planetary.planet', []).factory('Planet', function() {
+angular.module('PlanetModel', []).factory('Planet', function() {
 	var name = ''
 	var Planet = function(name) {
 		this.name = name;

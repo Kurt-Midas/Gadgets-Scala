@@ -3,7 +3,7 @@
 # ~~~~
 
 # Planetary calls
-GET 		/planetTest			controllers.PlanetController.planetTest()
+GET 		/planetDetails			controllers.PlanetController.planetTest()
 
 # Map the JS resource paths
 #GET 		/*file				controllers.Assets.at(path="/modules/planetary/public", file)

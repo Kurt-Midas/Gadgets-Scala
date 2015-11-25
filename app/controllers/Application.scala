@@ -13,13 +13,21 @@ import play.api.libs.json.Json.JsValueWrapper
 
 object Application extends Controller {
 
-  def index = Action.async {
-//    TestCaller.printMapOfCategorySix()
-//    TestCaller.printHeadOptionOfCategorySix()
+  /*def index = Action.async {
     PlanetController.getPlanetStuff.map{ res =>
       Ok(views.html.Index(res))
     }
 //    Ok(views.html.Index())
+  }*/
+  
+  def index = Action {
+    Ok(views.html.Index())
+  }
+  
+  def basePlanetary = Action.async {
+    PlanetController.getPlanetStuff.map { res =>
+      Ok(views.html.PlanetaryIndex(res))
+    }
   }
   
   /*case class Ship(groupId: Int, id: Int, name: String)

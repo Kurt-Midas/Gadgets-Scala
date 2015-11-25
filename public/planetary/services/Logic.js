@@ -1,4 +1,4 @@
-angular.module('planetary.mainlogic', [planetary.planet]).factory('Logic', function(){
+angular.module('PlanetCoordinator', ['PlanetModel']).factory('PlanetLogic', function(){
 	return {
 		hello: 'Hello World'
 	}

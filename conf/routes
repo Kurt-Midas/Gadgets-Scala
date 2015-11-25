@@ -7,17 +7,20 @@
 GET			/					 controllers.Application.index()
 
 # Planetary calls
-->			/planetary			planetary.Routes
+->			/planetary				planetary.Routes
 
 # Scrap calls
-->			/scrap				scrap.Routes
+->			/scrap					scrap.Routes
 #GET			/scrapTest  		scrap.controllers.ScrapController.scrapTest()
 
 # Webapi calls
-->			/webapi				webapi.Routes
+->			/webapi					webapi.Routes
+
+# Templates
+GET			/template/planetary		controllers.Application.basePlanetary()
 
 # POST testing for MarketDataHandler
 #POST	/getIDList		pricehandler.controllers.MarketDataHandler.idListTest(idList: List[Int])
 
 # Map the JS resource paths
-GET 		/*file				controllers.Assets.versioned(path="/public", file: Asset)
+GET 		/*file					controllers.Assets.versioned(path="/public", file: Asset)
