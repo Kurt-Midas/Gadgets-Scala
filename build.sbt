@@ -3,8 +3,11 @@ import NativePackagerKeys._
 name := """Gadgets"""
 
 libraryDependencies ++= Seq(
-  "org.webjars" % "angularjs" % "1.3.0-beta.2",
-  "org.webjars" % "requirejs" % "2.1.11-1",
+  //"org.webjars" % "angularjs" % "1.3.0-beta.2",
+  "org.webjars" % "angularjs" % "1.4.7",
+//  "org.webjars" % "requirejs" % "2.1.11-1",
+  "org.webjars.bower" % "angular-bootstrap" % "0.14.3",
+  "org.webjars" % "angular-ui-bootstrap" % "0.14.3",
   "com.typesafe.slick" %% "slick" % "3.0.1",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
   "com.zaxxer"           %      "HikariCP-java6"          %      "2.3.9",

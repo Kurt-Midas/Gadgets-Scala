@@ -10,6 +10,18 @@ import planetary.jsonapi.PlanetaryApi
 
 object PlanetController extends Controller with FullMapWriter{
   
+  def getPlanetStuff = {
+    PlanetaryApi.getFullResponse.map{ case res =>
+      Json.toJson(res)
+    }
+  }
+  
+  def getNonJsondPlanetStuff = {
+    PlanetaryApi.getFullResponse.map {
+      case res => res
+    }
+  }
+  
   def planetTest = Action.async {
 //    PlanetaryJsonApi.getSchematicMap.map{ case res => 
 //      Ok("SchematicMap Test: " + res)

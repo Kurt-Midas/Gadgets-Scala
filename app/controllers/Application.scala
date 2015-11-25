@@ -3,6 +3,7 @@ package controllers
 import play.api.mvc.{Action, Controller, Result}
 import play.api.http.MimeTypes
 //import dbmanager.calls.TestCaller
+import planetary.controllers.PlanetController
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
@@ -12,10 +13,13 @@ import play.api.libs.json.Json.JsValueWrapper
 
 object Application extends Controller {
 
-  def index = Action {
+  def index = Action.async {
 //    TestCaller.printMapOfCategorySix()
 //    TestCaller.printHeadOptionOfCategorySix()
-    Ok(views.html.Index())
+    PlanetController.getPlanetStuff.map{ res =>
+      Ok(views.html.Index(res))
+    }
+//    Ok(views.html.Index())
   }
   
   /*case class Ship(groupId: Int, id: Int, name: String)

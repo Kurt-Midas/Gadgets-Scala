@@ -14,6 +14,10 @@ trait FullMapWriter {
                           Map[Int, ItemDetails])] {
     implicit val planetMapWrites = new Writes[Map[Int, Seq[Int]]] {
       def writes( m: Map[Int, Seq[Int]]) : JsValue =
+        /*Json.obj( m.map{ case(k,v) =>
+          val ret : (String, JsValueWrapper) = k.toString() -> Json.toJson(v)
+          ret
+        }.toSeq:_*)*/
         Json.obj( m.map{ case(k,v) =>
           val ret : (String, JsValueWrapper) = k.toString() -> Json.toJson(v)
           ret
