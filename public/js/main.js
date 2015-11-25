@@ -5,7 +5,8 @@
 requirejs.config({
   paths: {
     'angular': ['../lib/angularjs/angular'],
-    'angular-route': ['../lib/angularjs/angular-route']
+    'angular-route': ['../lib/angularjs/angular-route'],
+    'piController': ['/planetary/controller/PlanetController']
   },
   shim: {
     'angular': {
@@ -18,18 +19,19 @@ requirejs.config({
   }
 });
 
-require(['angular', './controllers', './directives', './filters', './services', 'angular-route'],
+require(['angular', './controllers', './directives', './filters', './services', 'angular-route', 
+         'piController'],
   function(angular, controllers) {
 
     // Declare app level module which depends on filters, and services
 
-    angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'ngRoute']).
+    angular.module('gadgets', ['gadgets.filters', 'gadgets.services', 'gadgets.directives', 'ngRoute']).
       config(['$routeProvider', function($routeProvider) {
-        $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: controllers.MyCtrl1});
-        $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: controllers.MyCtrl2});
-        $routeProvider.otherwise({redirectTo: '/view1'});
+        $routeProvider.when('/pi', {templateUrl: 'partials/partial1.html', controller: 'planetAppController'});
+        $routeProvider.when('/scrap', {templateUrl: 'partials/partial2.html', controller: controllers.ScrapController});
+        $routeProvider.otherwise({redirectTo: '/pi'});
       }]);
 
-    angular.bootstrap(document, ['myApp']);
+    angular.bootstrap(document, ['gadgets','piController']);
 
 });
