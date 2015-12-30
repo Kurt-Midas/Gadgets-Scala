@@ -82,7 +82,7 @@ trait PlanetCalls extends PlanetschematicstypemapRepo
   def getItemDetails(set: Set[Int]): Future[Map[Int, ItemDetails]] = {
     def query = for{
       t <- invtypes if t.typeID inSetBind set
-    } yield(t.typeID, t.typeName, t.groupID)
+    } yield(t.typeID, t.typeName, t.marketGroupID)
     
     db.run(query.result).map{ res =>
       res.collect { 

@@ -36,7 +36,7 @@ trait FullMapWriter {
     implicit val itemDetailWrites = new Writes[Map[Int, ItemDetails]]{
       implicit val itemDetailWrites = new Writes[ItemDetails] {
         def writes(d: ItemDetails) = 
-          Json.obj("typeID" -> d.typeID, "name" -> d.typeName, "groupID" -> d.groupId)
+          Json.obj("typeID" -> d.typeID, "name" -> d.typeName, "tier" -> (d.groupId-1333))
       }
       def writes(map: Map[Int, ItemDetails]) = Json.obj(
           map.map{case (key, details) => 
