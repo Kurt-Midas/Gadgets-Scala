@@ -118,3 +118,19 @@ body {
 	padding-right: 0px !important;
 	text-align: center !important;
 }
+
+
+
+
+
+/*
+	Scrap CSS
+*/
+.subTable{
+	color: green;
+	font-size: 90%;
+	text-align: right;
+}
+.price {
+	text-align: right;
+}

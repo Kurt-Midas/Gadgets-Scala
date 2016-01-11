@@ -4,6 +4,7 @@
 
 # Planetary calls
 GET			/scrapTest  		controllers.ScrapController.scrapTest()
+POST		/scrapInfo			controllers.ScrapController.scrapInfoEndpoint()
 
 # Map the JS resource paths
 #GET 		/*file				controllers.Assets.at(path="/modules/scrap/public", file)

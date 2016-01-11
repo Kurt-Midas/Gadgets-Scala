@@ -4,6 +4,7 @@
 
 # Webapi calls
 POST			/webapiTest  		controllers.WebapiController.webapiTest()
+POST			/getMarketInfo 		controllers.WebapiController.getMarketInfo()
 ##POST	/getIDList		pricehandler.controllers.MarketDataHandler.idListTest(idList: List[Int])
 
 # Map the JS resource paths

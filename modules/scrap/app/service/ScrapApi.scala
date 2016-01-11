@@ -3,10 +3,30 @@ package scrap.service
 
 import dbmanager.calls.ScrapCaller
 import dbmanager.calls.{Component, TypeInfo}
+import scala.concurrent.Future
 
 object ScrapApi {
-  def getScrapFromIdList (list: List[Int]) = ScrapCaller.getLotsOfInfoFromIDList(list)
-  def getScrapFromNameList (list: List[String]) = ScrapCaller.getLotsOfInfoFromNameList(list)
+   def getLotsOfInfoFromIDList(list: List[Int]): Future[(Map[Int, List[Component]], Map[Int, TypeInfo])] = {
+     ScrapCaller.getLotsOfInfoFromIDList(list)
+   }
+   def getScrapFromNameList (list: List[String]) = ScrapCaller.getLotsOfInfoFromNameList(list)
+   
+   /*case class MultiComponent(resultID: Int, typeId: Int, quantity: Int, orderQuantity: Int)
+   def getScrapListFrom(list: List[(String, Int)]): Future[(Map[Int, List[MultiComponent]], Map[Int, TypeInfo])] = {
+       val nameToQuantityMap : Map[String, Int] = list.toMap
+       val info : Future[(Map[Int, List[Component]], Map[Int, TypeInfo])] =
+         ScrapCaller.getLotsOfInfoFromNameList(list.unzip._1);
+       
+       info.map { res =>
+         res._1.map { vals => 
+           vals._2.
+         }
+       }
+       
+       
+       
+       info
+   }*/
   
   /*implicit val componentWrites = new Writes[Component] {
     def writes(c: Component) = Json.obj("id" -> c.typeId, "quantity" -> c.quantity)

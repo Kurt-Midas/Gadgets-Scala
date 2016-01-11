@@ -50,7 +50,6 @@ trait ScrapCaller extends InvgroupsRepo
   }
     
   private def getProcessedResults(future: Future[Seq[(Int, Int, Int)]]) = {
-    //private vs member of calling function? 
     future.map{ res => 
       //get list of IDs 
       val unzipped: (Seq[Int], Seq[Int], Seq[Int]) = res.unzip3

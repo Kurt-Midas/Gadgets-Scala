@@ -31,9 +31,9 @@ lazy val commonSettings = Seq(
 lazy val root = Project(
 	id = "root",
 	base = file(".")
-).aggregate(dbmanager, planetary, scrap, webapi).
+).aggregate(dbmanager, planetary, scrap, webapi, wshandler).
 	settings(commonSettings: _*).
-	dependsOn(dbmanager, planetary, scrap, webapi).
+	dependsOn(dbmanager, planetary, scrap, webapi, wshandler).
 	enablePlugins(PlayScala)
 
 
@@ -44,6 +44,11 @@ fork in run := false
 lazy val dbmanager = Project(
 	id = "dbmanager",
 	base = file("modules/dbmanager")
+).enablePlugins(PlayScala).settings(commonSettings: _*)
+
+lazy val wshandler = Project(
+	id="wshandler",
+	base = file("modules/wshandler")
 ).enablePlugins(PlayScala).settings(commonSettings: _*)
 
 lazy val planetary = Project(
@@ -62,4 +67,5 @@ lazy val webapi = Project(
 	id = "webapi",
 	base = file("modules/webapi")
 ).enablePlugins(PlayScala).settings(commonSettings: _*)
+	.dependsOn(wshandler)
 

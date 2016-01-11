@@ -1,9 +1,0 @@
-# Routes
-# This file defines all planetary routes
-# ~~~~
-
-# Planetary calls
-GET			/scrapTest  		controllers.ScrapController.scrapTest()
-
-# Map the JS resource paths
-#GET 		/*file				controllers.Assets.at(path="/modules/scrap/public", file)

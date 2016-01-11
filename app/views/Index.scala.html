@@ -22,6 +22,9 @@
   <script src="@routes.Assets.versioned("lib/angular-ui-bootstrap/ui-bootstrap-tpls.min.js")" type="text/javascript"></script>
   <script src="@routes.Assets.versioned("lib/bootstrap/js/bootstrap.min.js")" type="text/javascript"></script>
   
+  <!-- Global Imports and Configs (before the references) -->
+  <script src="@routes.Assets.versioned("js/MarketService.js")" type="text/javascript"></script>
+  
   <!-- Planet Gadget Stuff -->
   <script src="@routes.Assets.versioned("planetary/services/PlanetData.js")" type="text/javascript"></script>
   <script src="@routes.Assets.versioned("planetary/services/Planet.js")" type="text/javascript"></script>
@@ -36,9 +39,10 @@
   <script src="@routes.Assets.versioned("planetary/directives/InfopanelDirective.js")" type="text/javascript"></script>
   
   <!-- Scrap Gadget Stuff -->
+  <script src="@routes.Assets.versioned("scrap/services/Logic.js")" type="text/javascript"></script>
   <script src="@routes.Assets.versioned("scrap/controller/ScrapController.js")" type="text/javascript"></script>
 
-  <!-- Global Imports and Configs (after the refrences) -->
+  <!-- Global Imports and Configs (after the references) -->
   <script src="@routes.Assets.versioned("js/conf.js")" type="text/javascript"></script>  
   
 </head>
