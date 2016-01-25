@@ -254,8 +254,10 @@ app.factory('Planet', ['FACILITIES', 'PRODUCT', 'LEVEL', 'PiDataModel',
 		},
 		refreshTaxes: function(){
 			console.log("Inside Planet.refreshTaxes");
+			this.exportTaxes = 0;
+			this.importTaxes = 0;
 			angular.forEach(this.ioDetails, function(item){
-				if(item.details > 0){
+				if(item.quantity > 0){
 					var details = PiData.getData().itemDetails[item.id];
 					var tier = details.tier;
 					this.exportTaxes += item.quantity * PRODUCT.TIER_COST[tier] * this.taxRate/100

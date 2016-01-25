@@ -7,18 +7,14 @@
 			<ul class="nav nav-pills nav-stacked">
 				<h3 class="navSection">Info Views</h3>
 				<li ng-class="{'active' : activeView == 'INFOPANEL'}">
-					<a data-toggle="pill" ng-click="setActiveView('INFOPANEL'); Logic.refreshOverviewTab()"
+					<a data-toggle="pill" ng-click="setActiveView('INFOPANEL'); Logic.loadOverviewTab()"
 					 class="nav-pills-condensed">
 						Setup Overview
 					</a>
 				</li>
-				<!-- <li ng-class="{'active' : activeView == 'IMPORTEXPORT'}">
-					<a data-toggle="pill" ng-click="setActiveView('IMPORTEXPORT')" class="nav-pills-condensed">
-						Imports and Exports
-					</a>
-				</li> -->
 				<li ng-class="{'active' : activeView == 'MARKETPANEL'}">
-					<a data-toggle="pill" ng-click="setActiveView('MARKETPANEL')" class="nav-pills-condensed">
+					<a data-toggle="pill" ng-click="setActiveView('MARKETPANEL'); Logic.loadMarketDetailsTab()" 
+					 class="nav-pills-condensed">
 						Market Details
 					</a>
 				</li>

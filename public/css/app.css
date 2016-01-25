@@ -118,6 +118,9 @@ body {
 	padding-right: 0px !important;
 	text-align: center !important;
 }
+.textRight {
+	text-align:right;
+}
 
 
 
@@ -133,4 +136,5 @@ body {
 }
 .price {
 	text-align: right;
+	font-family: initial !important;
 }

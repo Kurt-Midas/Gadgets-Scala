@@ -3,17 +3,17 @@
 	<div class="row">
 		<h2>System Info</h2>
 		<div class="col-md-6 col-sm-12">
-			<row>
+			<div class="row">
 				<p class="col-xs-6">Shortest Runtime: {{Logic.System.runtimeInfo.minRuntime | number:1}} hours</p>
 				<p class="col-xs-6">Bottleneck: {{Logic.System.runtimeInfo.bottleneck}}</p>
-			</row>
-			<row>
+			</div>
+			<div class="row">
 				<p class="col-xs-6">Total Import Taxes: {{Logic.System.taxes.importTaxes | number:2}} isk/hour</p>
 				<p class="col-xs-6">Total Export Taxes: {{Logic.System.taxes.exportTaxes | number:2}} isk/hour</p>
-			</row>
-			<row>
+			</div>
+			<div class="row">
 				<div class="col-xs-12">Total Setup Cost: {{Logic.System.setupCost}}</div>
-			</row>
+			</div>
 			
 			<!-- service.System.importExports = [];
 	service.System.taxes.importTaxes = 0;

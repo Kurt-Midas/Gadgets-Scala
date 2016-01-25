@@ -1,7 +1,7 @@
-var app = angular.module('PlanetCoordinator', ['PlanetModel','PlanetData'])
+var app = angular.module('PlanetCoordinator', ['PlanetModel','PlanetData', 'marketservice'])
 
-app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel',
-                          function($http, Planet, Data){
+app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService',
+                          function($http, Planet, Data, MarketService){
 	
 	function arrayObjectIndexOf(array, term, property){
 		for(var i = 0; i < array.length; i++){
@@ -134,7 +134,7 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel',
 	service.System.runtimeInfo.minRuntime = 0;
 	service.System.setupCost = 0;
 	
-	service.refreshOverviewTab = function(){
+	service.loadOverviewTab = function(){
 		service.System.importExports = getSystemImportExports();
 		
 		var taxes = getSystemTaxes();
@@ -146,6 +146,108 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel',
 		service.System.runtimeInfo.minRuntime = runtimeInfo.minRuntime;
 		
 		service.System.setupCost = getSystemSetupCost();
+	}
+	
+	service.loadMarketDetailsTab = function(){
+		console.log("Inside Logic, loadMarketDetailsTab")
+		service.loadOverviewTab();
+		service.getMarketInfo();
+	}
+
+	service.refreshSystemMarketTotals = function(){
+		//Total hourly export revenue
+		//Total hourly import cost
+		//Total hourly customs tax
+		//per planet:
+		//	total hourly export revenue
+		//	total hourly import cost
+		var totalHourlyExportRevenue = 0;
+		var totalHourlyImportCost = 0;
+		var totalHourlyCustomsTax = 0;
+		angular.forEach(this.planets, function(planet){
+			planet.exportRevenue = 0;
+			planet.importCost = 0;
+			angular.forEach(planet.ioDetails, function(io){
+				console.log("Inside refreshSystemMarketTotals: ", angular.toJson(io));
+				if(io.quantity > 0){
+					planet.exportRevenue += this.marketprices[io.id][this.exportOrderType].fivePercent * io.quantity
+				} else if (io.quantity < 0) {
+					planet.importCost -= this.marketprices[io.id][this.importOrderType].fivePercent * io.quantity
+				}
+			},this)
+			totalHourlyExportRevenue += planet.exportRevenue;
+			totalHourlyImportCost += planet.importCost;
+			totalHourlyCustomsTax += planet.exportTaxes + planet.importTaxes;
+		},this)
+		console.log("After refreshSystemMarketTotals: ", totalHourlyExportRevenue, totalHourlyImportCost, totalHourlyCustomsTax);
+		this.totalHourlyExportRevenue = totalHourlyExportRevenue;
+		this.totalHourlyImportCost = totalHourlyImportCost;
+		this.totalHourlyCustomsTax = totalHourlyCustomsTax;
+		//update market fees 
+		this.refreshMarketFees();
+	}
+
+	service.refreshMarketFees = function(){
+		console.log("inside Logic's refreshMarketFees");
+		//exports have sales tax. Imports do not.
+		//exports with SELL orders have broker fees. Imports with BUY orders have broker fees. 
+		if(this.importOrderType == "buy"){
+			//obtain import materials with buy orders: broker fees
+			this.totalHourlyImportMarketFees = this.totalHourlyImportCost * this.brokerFees/100;
+		} else{
+			//obtain import materials with sell orders: nothing
+			this.totalHourlyImportMarketFees = 0;
+		}
+		if(this.exportOrderType == "sell"){
+			//liquidate by creating sell orders: sales tax and broker fees
+			this.totalHourlyExportMarketFees = this.totalHourlyExportRevenue * (this.taxRate + this.brokerFees)/100
+		} else {
+			//liquidate by consuming buy orders: sales tax
+			this.totalHourlyExportMarketFees = this.totalHourlyExportRevenue * this.taxRate/100;
+		}
+		angular.forEach(this.planets, function(planet){
+			if(this.importOrderType == "buy"){
+				planet.importMarketFees = planet.importCost * this.brokerFees/100;
+			} else{
+				planet.importMarketFees = 0;
+			}
+			if(this.exportOrderType == "sell"){
+				planet.exportMarketFees = planet.exportRevenue * (this.taxRate + this.brokerFees)/100
+			} else {
+				planet.exportMarketFees = planet.exportRevenue * this.taxRate/100;
+			}
+		},this)
+		console.log("market fees? ", this.totalHourlyImportMarketFees, this.totalHourlyExportMarketFees)
+	}
+
+	this.totalHourlyCustomsTax = 0;
+	this.totalHourlyImportCost = 0;
+	this.totalHourlyExportRevenue = 0;
+	this.totalHourlyImportMarketFees = 0;
+	this.totalHourlyExportMarketFees = 0;
+	
+	service.marketId = 10000002; //jita
+	service.taxRate = 1.5;
+	service.brokerFees = 1;
+	service.importOrderType = "buy";
+	service.exportOrderType = "buy";
+	service.marketprices = {};
+	
+	service.getMarketInfo = function(marketId) {
+		console.log("inside Logic's function getMarketInfo");
+		var idList = [];
+		angular.forEach(service.System.importExports, function(io){
+			idList.push(io.id);
+		})
+		var promise = MarketService.getMarketInfo(service.marketId, idList)
+		
+		promise.then(function(successVal){
+			console.log("Successful call with val:", angular.toJson(successVal))
+			service.marketprices = successVal.statMap;
+			service.refreshSystemMarketTotals();
+		}, function(failReason){
+			console.log("failed market call with reason: ", failReason);
+		})
 	}
 	
 	service.hello = 'Hello World mk3!';
