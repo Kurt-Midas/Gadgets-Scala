@@ -1,18 +1,28 @@
 <div class="container-fluid">
 	<!-- <div class="row" style="background-color: #eeeeee; margin-bottom:20px"> -->
 	<div class="row">
-		<h2>System Info</h2>
+		<!-- <h2 style="text-align: center">Setup Overview</h2> -->
 		<div class="col-md-6 col-sm-12">
 			<div class="row">
-				<p class="col-xs-6">Shortest Runtime: {{Logic.System.runtimeInfo.minRuntime | number:1}} hours</p>
-				<p class="col-xs-6">Bottleneck: {{Logic.System.runtimeInfo.bottleneck}}</p>
+				<div class="col-xs-6">
+					<h4>Shortest Runtime:</h4> {{Logic.System.runtimeInfo.minRuntime | number:1}} hours
+				</div>
+				<div class="col-xs-6">
+					<h4>Bottleneck:</h4> {{Logic.System.runtimeInfo.bottleneck}}
+				</div>
 			</div>
 			<div class="row">
-				<p class="col-xs-6">Total Import Taxes: {{Logic.System.taxes.importTaxes | number:2}} isk/hour</p>
-				<p class="col-xs-6">Total Export Taxes: {{Logic.System.taxes.exportTaxes | number:2}} isk/hour</p>
+				<div class="col-xs-6">
+					<h4>Total Import Taxes:</h4> {{Logic.System.taxes.importTaxes | number:2}} isk/hour
+				</div>
+				<div class="col-xs-6">
+					<h4>Total Export Taxes:</h4> {{Logic.System.taxes.exportTaxes | number:2}} isk/hour
+				</div>
 			</div>
 			<div class="row">
-				<div class="col-xs-12">Total Setup Cost: {{Logic.System.setupCost}}</div>
+				<div class="col-xs-12">
+					<h4>Total Setup Cost:</h4> {{Logic.System.setupCost | number:0}}
+				</div>
 			</div>
 			
 			<!-- service.System.importExports = [];
@@ -111,22 +121,45 @@
 	
 	<div class="row" ng-repeat="p in Logic.planets" style="background-color: #eeeeee; margin-bottom:20px">
 		<div class="col-md-6 col-sm-12">
-			<h2>Warnings and Info for {{p.name}}</h2>
-			<!-- <p>Possible Planet Types</p>
-			<row>
-				<div class="col-xs-3 planetTypes" ng-repeat="pt in p.allowedPlanets">
-					{{PLANETNAME[pt]}}
-				</div>
-			</row>
-//factoriesBasic.length, factoriesAdvanced, factoriesHightech, extractors.length, numStorage, numLaunchpads
-//taxRate, level, cyclesPerActiveCycle (% utilization) (if isFactoryPlanet), %cpu, %grid, runtime 
-hourly/daily taxes, cost
--->
-
-			
-			<p>Some useful info like tax rate and whatever</p>
-			<p>Import/Export limited, bottleneck</p>
-			<p>Alerts?</p>
+			<h2>{{p.name}}</h2>
+			<!-- 
+				import/export taxes hour
+				planet is import/export limited
+				warnings (sidebar)
+				isBottleneck
+				factory planet?
+			 -->
+			 <div class="row">
+				 <div class="col-xs-6">
+				 	<h5>Import Taxes/Hour:</h5> {{p.importTaxes | number:2}}
+				 </div>
+				 <div class="col-xs-6">
+				 	<h5>Export Taxes/Hour:</h5> {{p.exportTaxes | number:2}}
+				 </div>
+			 </div>
+			 <div class="row">
+				 <div class="col-xs-6">
+				 	<h5>Limited by:
+					 	<span ng-show="p.importVolume > p.exportVolume">Imports</span>
+					 	<span ng-hide="p.importVolume > p.exportVolume">Exports</span>
+				 	</h5>
+				 </div>
+			 </div>
+			 <div class="col-xs-6" ng-show="p.isCpuOverloaded()">
+			 	<div class="text-danger">CPU Overloaded!</div>
+			 </div>
+			 <div class="col-xs-6" ng-show="p.isGridOverloaded()">
+			 	<div class="text-danger">Power Overloaded!</div>
+			 </div>
+			 <div class="col-xs-6" ng-show="p.isLowRuntime()">
+			 	<div class="text-danger">Run lasts {{p.runtime}} hours!</div>
+			 </div>
+			 <div class="col-xs-6" ng-show="p.isBadFactory()">
+			 	<div class="text-danger">Imports and 100% uptime!</div>
+			 </div>
+			 <div class="col-xs-6" ng-show="p.isWithoutLaunchpads()">
+			 	<div class="text-danger">Has no launchpads!</div>
+			 </div>
 		</div>
 		<div class="col-md-6 col-sm-12">
 			<h2 class="headerTextColor">Imports and Exports</h2>
@@ -138,7 +171,6 @@ hourly/daily taxes, cost
 					<th>Planet Max</th>
 				</tr>
 				<tr ng-repeat="item in p.ioDetails" ng-if="item.quantity < 0" class="importColors">
-				<!-- DATA.itemDetails[2876 -->
 					<td>{{DATA.itemDetails[item.id].name}}</td>
 					<td>{{item.quantity * -1 | number}} </td>
 					<td>{{item.quantity * Logic.System.runtimeInfo.minRuntime * -1 | number:0}}</td>

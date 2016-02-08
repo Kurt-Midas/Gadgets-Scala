@@ -8,7 +8,7 @@
 				<form class="form-inline" ng-show="p.editText">
 					<input type="text" class="form-control input-lg pull-left" ng-model="p.name">
 					<span class="input-group-btn pull-left">
-						<button type="button" class="btn btn-primary btn-lg" ng-click="p.editText=0">
+						<button type="submit" class="btn btn-primary btn-lg" ng-click="p.editText=0">
 							<span class="glyphicon glyphicon-ok"></span>
 						</button>
 					</span>
@@ -196,6 +196,7 @@
 					<select class="input form-control" style="width:auto"
 						ng-model="e.resourceId"
 						ng-options="type.id as type.name for type in p.resourceDatalist | orderBy:'name'"
+						ng-focus="e.resourceId=''; p.refreshAllowedPlanets()"
 						ng-change="p.refreshImportExports(); p.refreshAllowedPlanets()"></select>	
 					
 					<span class="input-group input-group-sm">

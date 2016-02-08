@@ -1,9 +1,9 @@
 <div class="container-fluid">
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-md-12">
 			<h1>MarketpanelTemplate</h1>
 		</div>
-	</div>	
+	</div>	 -->
 	
 	<div class="row">
 		<div class="col-md-12">
@@ -140,7 +140,7 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-6" ng-repeat="planet in Logic.planets">
+		<div class="col-md-12" ng-repeat="planet in Logic.planets">
 			<div class="panel panel-default">
 				<div class="panel-heading">{{planet.name}}</div>
 				<div class="panel-body">
@@ -150,61 +150,67 @@
 					<p>Export Market fees</p>
 					<p>Import Market fees</p>
 					<p>Profit after market fees</p> -->
-					
-					<table class="table table-condensed" style="text-align: right">
-						<tr ng-repeat="item in planet.ioDetails" ng-if="item.quantity > 0" class="exportColors">
-							<td style="text-align: left">{{DATA.itemDetails[item.id].name}}</td>
-							<td>{{item.quantity | number}}</td>
-							<td>
-								{{Logic.marketprices[item.id][Logic.exportOrderType].fivePercent * item.quantity | currency:"":2}}
-							</td>
-						</tr>
-						<tr ng-repeat="item in planet.ioDetails" ng-if="item.quantity < 0" class="importColors">
-							<td style="text-align: left">{{DATA.itemDetails[item.id].name}}</td>
-							<td>{{item.quantity * -1 | number}}</td>
-							<td>
-								{{Logic.marketprices[item.id][Logic.importOrderType].fivePercent * item.quantity *-1 | currency:"":2}}
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">POCO Taxes</td>
-							<td style="border-bottom: 3px red">
-								{{planet.importTaxes + planet.exportTaxes | currency:"":2}}
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">Export Revenue</td>
-							<td>{{planet.exportRevenue | currency:"":2}}</td>
-						</tr>
-						<tr>
-							<td colspan="2">Import Cost</td>
-							<td>{{planet.importCost | currency:"":2}}</td>
-						</tr>
-						<tr>
-							<td colspan="2">Planet Profit before Market Fees</td>
-							<td style="border-bottom: 3px red">
-								{{planet.exportRevenue - planet.importCost
-								 - (planet.importTaxes + planet.exportTaxes) | currency:"":2}}
-							</td>
-						</tr>
-						<tr>
-							<td colspan="2">Export Market Fees</td>
-							<td>{{planet.exportMarketFees | currency:"":2}}</td>
-						</tr>
-						<tr>
-							<td colspan="2">Import Market Fees</td>
-							<td>{{planet.importMarketFees | currency:"":2}}</td>
-						</tr>
-						<tr>
-							<td colspan="2">Independent Planet Profit</td>
-							<td>
-								{{planet.exportRevenue - planet.importCost
-								- planet.exportMarketFees - planet.importMarketFees 
-								- (planet.importTaxes + planet.exportTaxes) | currency:"":2}}
-							</td>
-						</tr>
-					</table>
-					
+					<div class="row">
+						<div class="col-md-6">
+							<table class="table table-condensed">
+								<tr ng-repeat="item in planet.ioDetails" ng-if="item.quantity > 0" class="exportColors">
+									<td>{{DATA.itemDetails[item.id].name}}</td>
+									<td class="price">{{item.quantity | number}}</td>
+									<td class="price">
+										{{Logic.marketprices[item.id][Logic.exportOrderType].fivePercent * item.quantity | currency:"":2}}
+									</td>
+								</tr>
+								<tr ng-repeat="item in planet.ioDetails" ng-if="item.quantity < 0" class="importColors">
+									<td>{{DATA.itemDetails[item.id].name}}</td>
+									<td class="price">{{item.quantity * -1 | number}}</td>
+									<td class="price">
+										{{Logic.marketprices[item.id][Logic.importOrderType].fivePercent * item.quantity *-1 | currency:"":2}}
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="col-md-6">
+							<table class="table table-condensed" style="text-align: right">
+								<tr>
+									<td colspan="2">Export Revenue</td>
+									<td class="price">{{planet.exportRevenue | currency:"":2}}</td>
+								</tr>
+								<tr>
+									<td colspan="2">Import Cost</td>
+									<td class="price">{{planet.importCost | currency:"":2}}</td>
+								</tr>
+								<tr>
+									<td colspan="2">POCO Taxes</td>
+									<td class="price">
+										{{planet.importTaxes + planet.exportTaxes | currency:"":2}}
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">Planet Profit before Market Fees</td>
+									<td class="price">
+										{{planet.exportRevenue - planet.importCost
+										 - (planet.importTaxes + planet.exportTaxes) | currency:"":2}}
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2">Export Market Fees</td>
+									<td class="price">{{planet.exportMarketFees | currency:"":2}}</td>
+								</tr>
+								<tr>
+									<td colspan="2">Import Market Fees</td>
+									<td class="price">{{planet.importMarketFees | currency:"":2}}</td>
+								</tr>
+								<tr>
+									<td colspan="2">Independent Planet Profit</td>
+									<td class="price">
+										{{planet.exportRevenue - planet.importCost
+										- planet.exportMarketFees - planet.importMarketFees 
+										- (planet.importTaxes + planet.exportTaxes) | currency:"":2}}
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

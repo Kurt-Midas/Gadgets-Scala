@@ -152,6 +152,16 @@ app.factory('Planet', ['FACILITIES', 'PRODUCT', 'LEVEL', 'PiDataModel',
 			this.refreshFitting();
 			this.refreshRuntime();
 		},
+		getEffectiveIoDetails: function(){
+			if(this.cyclesPerActiveCycle == 1){
+				return this.ioDetails;
+			}
+			var effectiveIoDetails = [];
+			angular.forEach(this.ioDetails, function(item){
+				effectiveIoDetails.push({id: item.id, quantity: item.quantity / this.cyclesPerActiveCycle})
+			}, this)
+			return effectiveIoDetails;
+		},
 		refreshImportExports: function(){
 			console.log("Inside Planet.refreshImportExports");
 			/* 1. Iterate over all factories and build ioList (schematic vs Factory number/active)
@@ -292,7 +302,7 @@ app.factory('Planet', ['FACILITIES', 'PRODUCT', 'LEVEL', 'PiDataModel',
 					console.log("refreshAllowedPlanets: checking planet " + id + " with " + resources);
 					angular.forEach(this.extractors, function(e){
 						console.log("refreshAllowedPlanets, " + angular.toJson(e));
-						if(resources.indexOf(e.resourceId) == -1){
+						if(e.resourceId && resources.indexOf(e.resourceId) == -1){
 							planetHasAllResources = false;
 						}
 					})
@@ -420,6 +430,21 @@ app.factory('Planet', ['FACILITIES', 'PRODUCT', 'LEVEL', 'PiDataModel',
 				}
 			},this)
 		},
+		isCpuOverloaded: function(){
+			return (this.CPU > LEVEL.LEVEL[this.level].CPU);
+		},
+		isGridOverloaded: function(){
+			return (this.Grid > LEVEL.LEVEL[this.level].GRID);
+		},
+		isLowRuntime: function(){
+			return (this.runtime < 48);
+		},
+		isBadFactory: function(){
+			return (this.cyclesPerActiveCycle == 1 && this.importVolume > 0);
+		},
+		isWithoutLaunchpads : function(){
+			return (this.numLaunchpads == 0)
+		},
 		getCopyOfThisPlanet: function(){
 			console.log("Inside Planet.getCopyOfThisPlanet");
 			var newPlanet = new Planet();
@@ -448,6 +473,7 @@ app.factory('Planet', ['FACILITIES', 'PRODUCT', 'LEVEL', 'PiDataModel',
 			
 			newPlanet.refreshStorage(); //includes fitting
 			newPlanet.refreshImportExports();
+			newPlanet.refreshAllowedPlanets();
 			
 			return newPlanet;
 		}

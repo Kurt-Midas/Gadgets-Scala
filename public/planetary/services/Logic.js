@@ -49,17 +49,17 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService'
 	}
 	
 	function getSystemImportExports() {
-		console.log("Inside Logic.refreshTotalImportExports");
+		console.log("Inside Logic.getSystemImportExports");
 		var ioList = [];
 		angular.forEach(planetList, function(planet){
 //			planet.ioDetails {id, quantity}
 			angular.forEach(planet.ioDetails, function(io){
 				var index = arrayObjectIndexOf(ioList, io.id, "id");
 				if(index == -1){
-					ioList.push({id: io.id, quantity: io.quantity});
+					ioList.push({id: io.id, quantity: io.quantity / planet.cyclesPerActiveCycle});
 				}
 				else {
-					ioList[index].quantity += io.quantity;
+					ioList[index].quantity += io.quantity / planet.cyclesPerActiveCycle;
 				}
 			})
 		})
@@ -70,8 +70,8 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService'
 		console.log("Inside Logic.refreshTotalTaxes");
 		var taxes = {importTaxes: 0, exportTaxes: 0};
 		angular.forEach(planetList, function(planet){
-			taxes.importTaxes += planet.importTaxes;
-			taxes.exportTaxes += planet.exportTaxes;
+			taxes.importTaxes += planet.importTaxes / planet.cyclesPerActiveCycle;
+			taxes.exportTaxes += planet.exportTaxes / planet.cyclesPerActiveCycle;
 		})
 		return taxes;
 	}
@@ -80,12 +80,15 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService'
 		console.log("Inside Logic.refreshSystemRuntime");
 		var runtimeInfo = {bottleneck:'', minRuntime: 999999};
 		angular.forEach(planetList, function(planet){
-			if(planet.runtime < runtimeInfo.minRuntime){
+			if(planet.runtime > 0 && 
+					planet.runtime < runtimeInfo.minRuntime &&
+					planet.cyclesPerActiveCycle == 1){
 				runtimeInfo.bottleneck = planet.name;
 				runtimeInfo.minRuntime = planet.runtime; 
 			}
 		})
 		if(runtimeInfo.minRuntime == 999999){
+			runtimeInfo.bottleneck = 'N/A';
 			runtimeInfo.minRuntime = 0;
 		}
 		return runtimeInfo;
@@ -164,7 +167,7 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService'
 		var totalHourlyExportRevenue = 0;
 		var totalHourlyImportCost = 0;
 		var totalHourlyCustomsTax = 0;
-		angular.forEach(this.planets, function(planet){
+		angular.forEach(planetList, function(planet){
 			planet.exportRevenue = 0;
 			planet.importCost = 0;
 			angular.forEach(planet.ioDetails, function(io){
@@ -175,9 +178,9 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService'
 					planet.importCost -= this.marketprices[io.id][this.importOrderType].fivePercent * io.quantity
 				}
 			},this)
-			totalHourlyExportRevenue += planet.exportRevenue;
-			totalHourlyImportCost += planet.importCost;
-			totalHourlyCustomsTax += planet.exportTaxes + planet.importTaxes;
+			totalHourlyExportRevenue += planet.exportRevenue / planet.cyclesPerActiveCycle;
+			totalHourlyImportCost += planet.importCost / planet.cyclesPerActiveCycle;
+			totalHourlyCustomsTax += (planet.exportTaxes + planet.importTaxes) / planet.cyclesPerActiveCycle;
 		},this)
 		console.log("After refreshSystemMarketTotals: ", totalHourlyExportRevenue, totalHourlyImportCost, totalHourlyCustomsTax);
 		this.totalHourlyExportRevenue = totalHourlyExportRevenue;
@@ -205,7 +208,7 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService'
 			//liquidate by consuming buy orders: sales tax
 			this.totalHourlyExportMarketFees = this.totalHourlyExportRevenue * this.taxRate/100;
 		}
-		angular.forEach(this.planets, function(planet){
+		angular.forEach(planetList, function(planet){
 			if(this.importOrderType == "buy"){
 				planet.importMarketFees = planet.importCost * this.brokerFees/100;
 			} else{
@@ -232,9 +235,13 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService'
 	service.importOrderType = "buy";
 	service.exportOrderType = "buy";
 	service.marketprices = {};
+
+	service.marketCallOngoing = false;
 	
 	service.getMarketInfo = function(marketId) {
 		console.log("inside Logic's function getMarketInfo");
+		service.marketCallOngoing = true;
+
 		var idList = [];
 		angular.forEach(service.System.importExports, function(io){
 			idList.push(io.id);
@@ -245,8 +252,10 @@ app.factory('PlanetLogic',['$http', 'Planet', 'PiDataModel', 'MarketDataService'
 			console.log("Successful call with val:", angular.toJson(successVal))
 			service.marketprices = successVal.statMap;
 			service.refreshSystemMarketTotals();
+			service.marketCallOngoing = false;
 		}, function(failReason){
 			console.log("failed market call with reason: ", failReason);
+			service.marketCallOngoing = false;
 		})
 	}
 	

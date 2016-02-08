@@ -40,24 +40,3 @@ marketService.service('MarketDataService',['$http', '$q', function($http, $q){
 }])
 
 
-/*
-$scope.populatePriceMapFromStatic = function(){
-//			console.log("Making price call with : " + types);
-			var getData = {method: 'GET',
-			url: '/priceAPI/mock',
-			params: {
-				typeList: types
-			}};
-			console.log("Making call: " + getData);
-			$http(getData)
-			.success(function(data){
-				$scope.marketPrices = data;
-				console.log("Call successful with response: " + $scope.marketPrices);
-				$scope.updateTotalImportExportCost();
-			})
-			.error(function(data, status, headers, config){
-				console.error("populatePriceMapFromStatic failed with info: " + data + " " + status + " " 
-						+ headers + " " + config); 
-			});
-		}
-*/

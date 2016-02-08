@@ -16,6 +16,9 @@
 					<a data-toggle="pill" ng-click="setActiveView('MARKETPANEL'); Logic.loadMarketDetailsTab()" 
 					 class="nav-pills-condensed">
 						Market Details
+						<span class="alertTooltip pull-right" ng-if="Logic.marketCallOngoing">
+							<i class="fa fa-refresh fa-spin"></i>
+						</span>
 					</a>
 				</li>
 				<h3 class="navSection">
@@ -27,24 +30,24 @@
 						{{p.name}}
 						
 						<!-- Over CPU -->
-						<span class="alertTooltip pull-right" uib-tooltip="CPU Overloaded!" ng-if="p.CPU > LEVEL[p.level].CPU" tooltip-placement="bottom">
+						<span class="alertTooltip pull-right" uib-tooltip="CPU Overloaded!" ng-if="p.isCpuOverloaded()" tooltip-placement="bottom">
 							<i class="fa fa-code-fork"></i>
 						</span>
 						<!-- Over Grid -->
-						<span class="alertTooltip pull-right" uib-tooltip="Power Overloaded!" ng-if="p.Grid > LEVEL[p.level].GRID" tooltip-placement="bottom">
+						<span class="alertTooltip pull-right" uib-tooltip="Power Overloaded!" ng-if="p.isGridOverloaded()" tooltip-placement="bottom">
 							<i class="fa fa-bolt"></i>
 						</span>
 						<!-- Short runtime -->
-						<span class="alertTooltip pull-right" uib-tooltip="Run lasts {{p.runtime}} hours!" ng-if="p.runtime < 48" tooltip-placement="bottom">
+						<span class="alertTooltip pull-right" uib-tooltip="Run lasts {{p.runtime}} hours!" ng-if="p.isLowRuntime()" tooltip-placement="bottom">
 							<i class="fa fa-hourglass-o"></i>
 						</span>
 						<!-- Imports and 100% uptime -->
-						<span class="alertTooltip pull-right" uib-tooltip="Factory planet with 100% uptime!" ng-if="p.cyclesPerActiveCycle == 1 && p.importVolume > 0" 
+						<span class="alertTooltip pull-right" uib-tooltip="Factory planet with 100% uptime!" ng-if="p.isBadFactory()"
 								tooltip-placement="bottom">
 							<i class="fa fa-percent"></i>
 						</span>
 						<!-- No Launchpads -->
-						<span class="alertTooltip pull-right" uib-tooltip="No Launchpads!" ng-if="p.numLaunchpads == 0" tooltip-placement="bottom">
+						<span class="alertTooltip pull-right" uib-tooltip="No Launchpads!" ng-if="p.isWithoutLaunchpads()" tooltip-placement="bottom">
 							<i class="fa fa-rocket"></i>
 						</span>
 					</a>
