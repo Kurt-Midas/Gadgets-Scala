@@ -1,7 +1,7 @@
 # Gadgets-Scala
 I wanted to learn something new so I decided to completely rewrite the existing EveGadgets program in Scala{Play, Slick, Angular}. So far I've discovered that collections are VERY fun to work with and that Spring is much better at jsonification than Play. 
 
-Current plans are that all future development to Gadgets goes here.
+This version is probably abandoned in favor of Gadgets-Node. 
 
 # PROBABLY HOW TO GET THIS THING RUNNING 
 1.  Go to fuzzworks SDD and get invtypes, invgroups, invmarketgroups, invtypematerials, planetschematics, and planetschematicstypemap
